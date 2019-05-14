@@ -209,18 +209,23 @@ class Interpreter(NodeVisitor):
             return ''
         return self.visit(tree)
 
+class Check(object):
+    def __init__(self, check):
+        self.check = check
+
+
+
 
 def main():
         while True:
             try:
-                text="200+200*(--2++4)*-3--5/(1--5-8+4)"
+                text=input('input:')
 
                 break
             except EOFError:
                 print( "error.")
             if not text:
                 continue
-
         lexer = Lexer(text)
         parser = Parser(lexer)
         interpreter = Interpreter(parser)
