@@ -110,11 +110,28 @@ public:
     {
     }
 
- 
     int interpreter(map<string, int>& var)
     {
         return left->interpreter(var) / right ->interpreter(var);
     }
+};
+
+  class doubleExpression : public SymbolExpression
+{
+public:
+    doubleExpression(Expression* left, Expression* right): SymbolExpression(left,right)
+    {
+    }
+
+ 
+    int interpreter(map<string, int>& var)
+    {
+      
+
+        return left->interpreter(var) + right ->interpreter(var)+left ->interpreter(var) ;
+    }
+
+
 
 
 };
@@ -145,9 +162,13 @@ public:
 
                
                 right = new VarExpression(expStr.substr(++i,1));
-
-                
+               
                 stkExp.push(new AddExpression(left, right));
+                
+                 if(expStr.substr(i,2)=="++"){
+                   right = new VarExpression(expStr.substr(i,2));
+                  stkExp.push(new doubleExpression(left, right));
+                }
 
                 break;
 
@@ -189,6 +210,8 @@ public:
                 stkExp.push(new DivExpression(left, right));
 
                 break;
+          
+        
 
             default:
                 stkExp.push(new VarExpression(expStr.substr(i,1)));
@@ -238,14 +261,17 @@ public:
 };
 int main()
 {
-    string expStr = "a+b-c*a/b"; 
-
-    map<string, int> var;  
-    var["a"] = 100;
+    string expStr = "a+b+c"; 
+    string expStr2 = "a*b/c";
+    map<string, int> var; 
+    var["a"] = 10;
     var["b"] = 20;
-    var["c"] = 40;
+    var["c"] = 10;
     Calculator cal(expStr);
+    Calculator cal2(expStr2);
+    
 
     cout << expStr << " = " << cal.run(var) << endl;
+    cout << expStr2 << " = " << cal2.run(var) << endl;
     return 0;
 }
